@@ -92,7 +92,7 @@ class Queue:
         tail = head
 
         while l1 and l2:
-            if l1.value.prioridade < l2.value.prioridade:
+            if l1.value.prioridade > l2.value.prioridade:
                 tail.next = l1
                 l1 = l1.next
             else:
@@ -103,6 +103,9 @@ class Queue:
         return head.next
 
     def merge_sort(self, header=None):
+        """
+        Algoritmo de merge com complexidade O(N log N)
+        """
         if not header or not header.next:
             return header
     

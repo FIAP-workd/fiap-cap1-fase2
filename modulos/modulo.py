@@ -63,12 +63,13 @@ class MGPEB:
         self.lista_modulos.append(modulo)
 
     def classificar_modulo(self, modulo: Modulos):
+        self.lista_modulos.append(modulo)
         if modulo.combustivel < 20:
             self.em_alerta.append(modulo)
         elif modulo.prioridade >= 8:
             self.em_espera.append(modulo)
-        else:
-            self.adicionar_modulo(modulo)
+        #else:
+        self.adicionar_modulo(modulo)
 
     def localiza_menor(self, atributo = 'prioridade'):
         """Algoritmo com complexidade O(n)"""
@@ -113,7 +114,25 @@ class MGPEB:
             raise Exception(f"Tipo de carga {tipo_carga} não encontrado nos módulos.")
 
     def sort_by_priority(self):
-        return self.fila_pouso.merge_sort(self.fila_pouso.first)
+        """
+        Fazemos o sort por prioridade aqui, usamos um exemplo de merge_sort.
+        Na lógica que fizemos, nossa prioridade varia de 0 a 10, sendo 10 a prioridade máxima, 
+        então no nosso MergeSort fiz o algoritmo por padrão retornar no formato decrescente.
+
+        Dessa forma, como estamos trabalhando com lista de pouso, o primeiro elemento vai ser o que deverá sair antes.
+        Ideia de lista(First In, First Out. FIFO)
+        """
+        sorted_head = self.fila_pouso.merge_sort(self.fila_pouso.first)
+        self.fila_pouso.first = sorted_head
+
+        current = sorted_head
+        last = None
+        while current:
+            last = current
+            current = current.next
+        self.fila_pouso.last = last if last else self.fila_pouso.last
+
+        return sorted_head
 
     def peek(self):
         return self.fila_pouso.peek()
