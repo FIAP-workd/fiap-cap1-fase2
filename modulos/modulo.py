@@ -112,3 +112,18 @@ class MGPEB:
         else:
             raise Exception(f"Tipo de carga {tipo_carga} não encontrado nos módulos.")
 
+    def sort_by_priority(self):
+        return self.fila_pouso.merge_sort(self.fila_pouso.first)
+
+    def peek(self):
+        return self.fila_pouso.peek()
+    
+    def printa(self):
+        self.fila_pouso.__str__()
+
+    @property
+    def count(self):
+        return self.fila_pouso.get_count
+    
+    def display(self):
+        self.fila_pouso.display()
