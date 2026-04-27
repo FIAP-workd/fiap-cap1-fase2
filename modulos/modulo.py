@@ -54,9 +54,9 @@ class MGPEB:
     def __init__(self):
         self.lista_modulos: List[Modulos] = []
         self.fila_pouso: Queue = Queue()  # queue FIFO
-        self.pousados: List[Modulos] = []
-        self.em_alerta: List[Modulos] = []
-        self.em_espera: List[Modulos] = []
+        self.pousados: Queue = Queue()
+        self.em_alerta: Queue = Queue()
+        self.em_espera: Queue = Queue()
         
     def adicionar_modulo(self, modulo: Modulos):
         self.fila_pouso.push(modulo)
@@ -65,9 +65,9 @@ class MGPEB:
     def classificar_modulo(self, modulo: Modulos):
         self.lista_modulos.append(modulo)
         if modulo.combustivel < 20:
-            self.em_alerta.append(modulo)
+            self.em_alerta.push(modulo)
         elif modulo.prioridade >= 8:
-            self.em_espera.append(modulo)
+            self.em_espera.push(modulo)
         #else:
         self.adicionar_modulo(modulo)
 

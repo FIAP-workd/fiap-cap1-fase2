@@ -19,10 +19,21 @@ print(mgpeb.count)
 print()
 
 prioridade_maxima = mgpeb.localiza_maior()
+combustivel_maximo = mgpeb.localiza_maior('combustivel')
+massa_maxima = mgpeb.localiza_maior('massa')
 
 prioridade_minima = mgpeb.localiza_menor()
+combustivel_minimo = mgpeb.localiza_menor('combustivel')
+massa_minima = mgpeb.localiza_menor('massa')
+print(f"Prioridade máxima: {prioridade_maxima.nome} - {prioridade_maxima.prioridade}")
+print(f"Combustível máximo: {combustivel_maximo.nome} - {combustivel_maximo.combustivel}%")
+print(f"Massa máxima: {massa_maxima.nome} - {massa_maxima.massa} kg")
+print(f"Prioridade mínima: {prioridade_minima.nome} - {prioridade_minima.prioridade}")
+print(f"Combustível mínimo: {combustivel_minimo.nome} - {combustivel_minimo.combustivel}%")
+print(f"Massa mínima: {massa_minima.nome} - {massa_minima.massa} kg")
 
 local_tipo = mgpeb.localiza_tipo_carga("Habitação")
+print(f" Módulos do tipo 'Habitação': \n{'\n    -'.join([modulo.nome for modulo in local_tipo])}")
 
 #print(mgpeb.peek())
 mgpeb.display()
