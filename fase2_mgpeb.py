@@ -44,7 +44,7 @@ def exibir_modulos(lista, titulo):
             print(f"   Massa: {modulo['massa']} kg")
             print(f"   Criticidade: {modulo['criticidade']}")
             print(f"   Horário de chegada: {modulo['horario_chegada']}")
-            print()
+            print("\n")
 
 
 # Função simples para analisar situação do módulo

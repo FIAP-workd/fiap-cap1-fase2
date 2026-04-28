@@ -54,9 +54,9 @@ class MGPEB:
     def __init__(self):
         self.lista_modulos: List[Modulos] = []
         self.fila_pouso: Queue = Queue()  # queue FIFO
-        self.pousados: Queue = Queue()
-        self.em_alerta: Queue = Queue()
-        self.em_espera: Queue = Queue()
+        self.pousados: List[Modulos] = []
+        self.em_alerta: List[Modulos] = []
+        self.em_espera: List[Modulos] = []
         
     def adicionar_modulo(self, modulo: Modulos):
         self.fila_pouso.push(modulo)
