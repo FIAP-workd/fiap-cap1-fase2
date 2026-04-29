@@ -41,7 +41,9 @@ mgpeb.display()
 mgpeb.sort_by_priority()
 mgpeb.display()
 
-# Simulação de pouso.
+# Simulação de pouso dos módulos.
+print("\n\nPouso dos módulos")
+mgpeb.modulos_pousar()
 
 # Funções Matemáticas
 
@@ -97,3 +99,5 @@ def simular_pouso_marte():
 
         tempo += dt
 
+# Executar a simulação
+simular_pouso_marte()

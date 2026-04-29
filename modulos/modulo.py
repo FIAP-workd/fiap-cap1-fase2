@@ -1,6 +1,6 @@
 from __future__ import annotations
 from modulos.fila import Queue
-import numpy as np
+import random
 from typing import List
 import datetime
 
@@ -15,6 +15,52 @@ class Modulos:
         self.pronto_pouso: bool = False
         self.hora_pouso: datetime = hora_pouso
         self.prioridade: int = self.prioridade()
+        self._gerar_variaveis_pouso()
+
+    def _gerar_variaveis_pouso(self):
+        seed = sum(ord(letra) for letra in self.nome)
+        rng = random.Random(seed)
+
+        if not hasattr(self, 'alinhamento_rota'):
+            self.alinhamento_rota: bool = bool(rng.choice([True, True, True, True, False]))
+        if not hasattr(self, 'pressao_atmosferica_ok'):
+            self.pressao_atmosferica_ok: bool = True
+        if not hasattr(self, 'sistemas_ok'):
+            self.sistemas_ok: bool = bool(rng.choice([True, True, True, False]))
+        if not hasattr(self, 'radiacao_ok'):
+            self.radiacao_ok: bool = True
+        if not hasattr(self, 'altura_pouso_segura'):
+            self.altura_pouso_segura: bool = True
+        if not hasattr(self, 'velocidade_descida'):
+            self.velocidade_descida: float = float(rng.uniform(1, 12))
+        if self.hora_pouso is None:
+            self.hora_pouso = datetime.datetime.now()
+
+    def pousar(self):
+        self._gerar_variaveis_pouso()
+
+        condicoes = {
+            'combustivel suficiente': self.combustivel >= 20,
+            'alinhamento de rota seguro': self.alinhamento_rota,
+            'pressao atmosferica dentro do limite': self.pressao_atmosferica_ok,
+            'sistemas operacionais': self.sistemas_ok,
+            'radiacao em nivel seguro': self.radiacao_ok,
+            'altura de pouso segura': self.altura_pouso_segura,
+            'velocidade de descida segura': self.velocidade_descida <= 10,
+        }
+
+        falhas = [motivo for motivo, aprovado in condicoes.items() if not aprovado]
+
+        if falhas:
+            self.pouso = False
+            self.pronto_pouso = False
+            print(f"Pouso do modulo {self.nome} nao foi possivel por: {', '.join(falhas)}.")
+            return False
+
+        self.pouso = True
+        self.pronto_pouso = True
+        print(f"Modulo {self.nome} pousou com sucesso.")
+        return True
 
     def prioridade(self):
         def limitar_0_10(valor):
@@ -60,7 +106,6 @@ class MGPEB:
         
     def adicionar_modulo(self, modulo: Modulos):
         self.fila_pouso.push(modulo)
-        self.lista_modulos.append(modulo)
 
     def classificar_modulo(self, modulo: Modulos):
         self.lista_modulos.append(modulo)
@@ -76,7 +121,7 @@ class MGPEB:
         if atributo not in ['combustivel', 'massa', 'prioridade']:
             raise Exception(f"Atributo {atributo} não possui formas de se capturar o menor valor.")
         
-        menor_valor = np.inf
+        menor_valor = float('inf')
         modulo_menor = None
         for modulo in self.lista_modulos:
             valor_atributo = getattr(modulo, atributo)
@@ -146,3 +191,19 @@ class MGPEB:
     
     def display(self):
         self.fila_pouso.display()
+
+    def modulos_pousar(self):
+        self.sort_by_priority()
+
+        while self.fila_pouso:
+            node = self.fila_pouso.pop()
+            modulo = node.value
+
+            if modulo.pousar():
+                if modulo not in self.pousados:
+                    self.pousados.append(modulo)
+            else:
+                if modulo not in self.em_alerta:
+                    self.em_alerta.append(modulo)
+
+        return self.pousados
