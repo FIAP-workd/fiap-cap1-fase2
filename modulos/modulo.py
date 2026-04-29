@@ -65,9 +65,9 @@ class MGPEB:
     def classificar_modulo(self, modulo: Modulos):
         self.lista_modulos.append(modulo)
         if modulo.combustivel < 20:
-            self.em_alerta.push(modulo)
+            self.em_alerta.append(modulo)
         elif modulo.prioridade >= 8:
-            self.em_espera.push(modulo)
+            self.em_espera.append(modulo)
         #else:
         self.adicionar_modulo(modulo)
 
